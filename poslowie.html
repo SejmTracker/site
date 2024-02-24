@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Posłowie - SejmTracker</title>
+</head>
+<style>
+    table, tr, td{
+        border: 3px solid black;
+        text-align: center;
+    }
+</style>
+<body>
+    <center>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        const kad = urlParams.get('kad');
+        const leg = urlParams.get('leg');
+
+        fetch(`https://api.sejm.gov.pl/sejm/term${kad}/MP/${leg}`)
+        .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+            return response.json();
+        })
+        .then(data => {
+            document.write(`<img src="https://api.sejm.gov.pl/sejm/term${kad}/MP/${leg}/photo">`)
+            document.write(`<h1>${data.lastFirstName}</h1>`)
+            document.write(`<p>Numer legitymacji: ${data.id}</p>`)
+            document.write(`<p>Data urodzenia: ${data.birthDate}</p>`)
+            document.write(`<p>Miejsce urodzenia: ${data.birthLocation}</p>`)
+            document.write(`<p>Klub: ${data.club}</p>`)
+            document.write(`<p>Okręg wyborczy: ${data.districtName} (${data.districtNum})</p>`)
+            document.write(`<p>Województwo: ${data.voivodeship}</p>`)
+            document.write(`<p>Ilość głosów w wyborach: ${data.numberOfVotes}</p>`)
+            document.write(`<p>Wykształcenie: ${data.educationLevel}</p>`)
+            document.write(`<p>Zawód: ${data.profession}</p>`)
+            document.write(`<p>Adres e-mail: ${data.email}</p>`)
+            document.write(`<a href="?kad=${kad}&leg=${parseInt(leg) - 1}">< Poprzedni  </a><a href="?kad=${kad}&leg=${parseInt(leg) + 1}">Następny ></a>`)
+            document.title = `${data.lastFirstName} - Posłowie - SejmTracker`;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    </script>
+    </center>
+</body>
+</html>
