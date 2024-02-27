@@ -16,7 +16,7 @@
     <a href="/index.html">< Powrót</a>
     <h1>Głosowania</h1>
     <p>Wyszukaj głosowanie</p>
-    <form action="/glosowania.html">
+    <form action="./glosowania.html">
         <label for="kad">Numer Kadencji</label>
         <input type="number" name="kad" id="kad">
         <br>
@@ -51,7 +51,7 @@
             return response.json();
         })
         .then(data => {
-            document.write(`<a href="/glosowania.html">< Powrót</a>`)
+            document.write(`<a href="./glosowania.html">< Powrót</a>`)
             document.write("<br>")
             document.write(`${data.title}`);
             document.write(`<br>`);
