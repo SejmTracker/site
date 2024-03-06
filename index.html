@@ -1,22 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>SejmTracker</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SejmTracker 2.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+  body{
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    background-color: dimgray;
+    color: white;
+  }
 
+  #logo-1{color: white;}
+  #logo-2{color: red;}
+  p{
+    font-size: 150px;
+  }
+
+  img{
+    border-radius: 50px;
+  }
+</style>
+</head>
 <body>
-    <h1>SejmTracker</h1>
-    <a href="./poslowie.html"><h2>Posłowie</h2></a>
-    <a href="./glosowania.html"><h2>Głosowania</h2></a>
-    <a href="./kluby.html"><h2>Kluby i koła</h2></a>
-    <br>
-    <br>
-    <footer>&copy; 2024 SejmTracker</footer>
-    <footer>&copy; 2024 vimedia</footer>
-    <footer>Dane &copy; System Informacyjny Sejmu</footer>
-    <footer>v1.0.0</footer>
+
+<img src="https://avatars.githubusercontent.com/u/161644866?v=4" height="200px">
+<h1><span id="logo-1">Sejm</span><span id="logo-2">Tracker</span> 2.0</h1>
+<h1>21.03.2024 18:00</h1>
+<p id="countdown"></p>
+<footer>© 2024 vimedia</footer>
+
+<script>
+let countDownDate = new Date("Mar 21, 2024 18:00:00").getTime();
+
+let x = setInterval(function() {
+
+  let now = new Date().getTime();
+  
+  let distance = countDownDate - now;
+  
+  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+  document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+  
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("countdown").innerHTML = "JUŻ WKRÓTCE";
+  }
+}, 1000);
+</script>
+
 </body>
 </html>
+
