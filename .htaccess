@@ -1,0 +1,2 @@
+AddType text/html .html
+ErrorDocument 404 /404.html

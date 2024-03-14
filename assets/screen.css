@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+body{
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-weight: bold;
+}
+p{
+    font-size: 50pt;
+    margin: 10px;
+}
+.left{
+    font-size: 100pt;
+    float: left;
+}
+.right{
+    font-size: 100pt;
+    float: right;
+}
+footer{
+    clear: both;
+    font-family: 'Inter', sans-serif;
+    font-weight: initial;
+}
+div{
+    clear: both;
+}
