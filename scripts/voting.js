@@ -14,18 +14,18 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
     }
         return response.json();
 })
-.then(data => {
+.then(async data => {
     document.getElementById("back").innerHTML = `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`
     let glos = "?"
     if(data.kind == "ON_LIST") {
-        document.getElementById("title").textContent = data.title;
-        document.getElementById("top").textContent = data.topic;
-        document.getElementById("info").innerHTML = `Głosowało: ${data.totalVoted}; Niebiorących udziału: ${data.notParticipating}`;
         let votingOptions = "";
         for(let i = 0; i < data.votingOptions.length; i++) {
             votingOptions = votingOptions + `${data.votingOptions[i].optionIndex}. ${data.votingOptions[i].option}: ${data.votingOptions[i].votes}<br>`
         }
-        document.getElementById("votingOptions").innerHTML = `Opcje głosowania:<br>${votingOptions}`
+        document.getElementById("votingOpt").innerHTML = `Opcje głosowania:<br>${votingOptions}`;
+        document.getElementById("title").textContent = data.title;
+        document.getElementById("top").textContent = data.topic;
+        document.getElementById("info").innerHTML = `Głosowało: ${data.totalVoted}; Niebiorących udziału: ${data.notParticipating}`;
         for(let j = 0; j < data.votes.length; j++) {
             for(let k = 1; k <= data.votingOptions.length; k++) {
                 if(data.votes[j].listVotes[k] == "YES") {
@@ -33,7 +33,8 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
                 }
             } 
             let div = document.getElementById("div")
-            let table = document.getElementById("tab");
+            let table;
+            table = document.getElementById("tab");
             let row = document.createElement("tr");
             let num = document.createElement("td");
             let nam = document.createElement("td");
@@ -47,7 +48,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
             row.appendChild(nam);
             row.appendChild(clu);
             row.appendChild(vot);
-            table.appendChild(row);
+            await table.appendChild(row);
             div.appendChild(table);
         }
     } else {
