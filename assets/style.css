@@ -79,4 +79,45 @@ table{
     font-size: 20px;
     text-align: center;
     cursor: pointer;
-  }
+}
+
+.tab-mp{
+    display: flex;
+    width: 50%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.tab-mp table{
+    margin-bottom: 20px;
+}
+
+.single{
+    transition: border-color 0.3s ease;
+}
+
+.single:hover{
+    border-color: red;
+    cursor: pointer;
+}
+
+#select{
+    letter-spacing: 5px;
+    position: sticky;
+    top: 0;
+    background-color: dimgray;
+    padding: 20px;
+}
+
+#tab{
+    display: flex;
+    width: 50%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#tab table{
+    margin-bottom: 20px;
+}

@@ -6,10 +6,13 @@ const urlParams = new URLSearchParams(queryString);
 const sit = urlParams.get('sit');
 const id = urlParams.get('id');
 
+let table = document.getElementById("tab");
+
 fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
 .then(response => {
     if (!response.ok) {
-        document.getElementById("info").innerHTML = `<center><p style="background-color: red; width: 20%; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>BŁĄD<br>Nie można odnaleźć głosowania.<br><br></p></center>`
+        document.getElementById("info").innerHTML = `<center><p style="background-color: red; width: 300px; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>BŁĄD<br>Nie można odnaleźć głosowania.<br><br></p></center>`
+        document.title = "Wystąpił błąd | SejmTracker";
         throw new Error('Network response was not ok');
     }
         return response.json();
@@ -31,10 +34,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
                 if(data.votes[j].listVotes[k] == "YES") {
                     glos = k;
                 }
-            } 
-            let div = document.getElementById("div")
-            let table;
-            table = document.getElementById("tab");
+            }
             let row = document.createElement("tr");
             let num = document.createElement("td");
             let nam = document.createElement("td");
@@ -48,8 +48,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
             row.appendChild(nam);
             row.appendChild(clu);
             row.appendChild(vot);
-            await table.appendChild(row);
-            div.appendChild(table);
+            document.getElementById("tab-vote").appendChild(row);
         }
     } else {
         document.getElementById("title").textContent = data.title;
@@ -68,8 +67,6 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
             }
 
             if(data.votes[i].vote == "ABSENT") {
-                let div = document.getElementById("div")
-                let table = document.getElementById("tab");
                 let row = document.createElement("tr");
                 let num = document.createElement("td");
                 let nam = document.createElement("td");
@@ -85,11 +82,8 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
                 row.appendChild(nam);
                 row.appendChild(clu);
                 row.appendChild(vot);
-                table.appendChild(row);
-                div.appendChild(table);
+                document.getElementById("tab-vote").appendChild(row);
             } else {
-                let div = document.getElementById("div")
-                let table = document.getElementById("tab");
                 let row = document.createElement("tr");
                 let num = document.createElement("td");
                 let nam = document.createElement("td");
@@ -103,8 +97,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
                 row.appendChild(nam);
                 row.appendChild(clu);
                 row.appendChild(vot);
-                table.appendChild(row);
-                div.appendChild(table);
+                document.getElementById("tab-vote").appendChild(row);
             }
         }
     }

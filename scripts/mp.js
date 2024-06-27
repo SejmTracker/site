@@ -8,15 +8,15 @@ const id = urlParams.get('id');
 fetch(`https://api.sejm.gov.pl/sejm/term10/MP/${id}`)
 .then(response => {
     if (!response.ok) {
-      document.getElementById("info").innerHTML = `<center><p style="background-color: red; width: 20%; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>BŁĄD<br>Nie można odnaleźć posła.<br><br></p></center>`
-      document.title = "SejmTracker"
+      document.getElementById("info").innerHTML = `<center><p style="background-color: red; width: 300px; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>BŁĄD<br>Nie można odnaleźć posła.<br><br></p></center>`
+      document.title = "Wystąpił błąd | SejmTracker";
       throw new Error('Network response was not ok');
     }
         return response.json();
 })
 .then(data => {
   if(data.active == false) {
-    document.getElementById("div").innerHTML = `<p style="background-color: red; width: 20%; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>MANDAT WYGASŁ<br>Mandat posła został wygaszony z powodu: ${data.waiverDesc}<br><br></p>`
+    document.getElementById("div").innerHTML = `<p style="background-color: red; width: 300px; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>MANDAT WYGASŁ<br>Mandat posła został wygaszony z powodu: ${data.waiverDesc}<br><br></p>`
   }
 
     document.getElementById("photo").src = `https://api.sejm.gov.pl/sejm/term10/MP/${id}/photo`;
