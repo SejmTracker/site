@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MGQNSPEFH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8MGQNSPEFH');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-W7Z2QZKT');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/style.css">
@@ -8,17 +25,32 @@
     <script src="/scripts/clubs.js"></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
     <title>Wczytuję | SejmTracker</title>
+    <style>
+        table{
+            width: 250px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
-    <p><a href="/clubs.html">< Powrót do: Kluby</a></p>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7Z2QZKT"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="info">
         <img id="photo" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="logo klubu" height="50px">
         <h1 id="name">Nazwa</h1>
         <p>Nazwa skrócona: <span id="id"></span></p>
-        <p>Liczba członków: <span id="membersCount"></span></p>
         <p>Telefon: <span id="phone"></span></p>
         <p>Fax: <span id="fax"></span></p>
-        <p>Adres e-mail: <span id="email"></span></p>
+        <p id="email-form">Adres e-mail: <span id="email"></span></p>
+        <div>
+            <h1>Posłowie należący do ugrupowania (<span id="membersCount"></span>):</h1>
+            <center>
+                <div id="tab"></div>
+            </center>
+        </div>
     </div>
     <button id="scrollToTopButton" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
     <br>
@@ -26,6 +58,7 @@
     <footer>&copy; 2024 <a href="https://im-vi.github.io/" target="_blank">vimedia</a></footer>
     <footer>Dane &copy; System Informacyjny Sejmu</footer>
     <footer><a href="/contact.html" target="_blank"><i class="fa-solid fa-phone"></i> Kontakt</a></footer>
+    <footer><a href="/privacy-policy.html">Polityka prywatności</a></footer>
     <br>
     <p>
         <a href="https://instagram.com/sejmtracker" target="_blank"><i class="fa-brands fa-instagram"></i></a>
