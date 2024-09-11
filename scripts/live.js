@@ -16,7 +16,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/videos/today`)
         if(data[i].type == "posiedzenie") {
             console.log(data[i])
             unid = data[i].unid;
-            document.getElementById("live").innerHTML = `<iframe id="videoPlayerFrame" width="912" height="620" src="https://sejm-embed.redcdn.pl/Sejm10.nsf/VideoFrame.xsp/${unid}" frameborder="0" allowfullscreen></iframe>`
+            document.getElementById("live").innerHTML = `<iframe id="videoPlayerFrame" width="912" height="620" src="https://www.sejm.gov.pl/Sejm10.nsf/VideoFrame.xsp/${unid}" frameborder="0" allowfullscreen></iframe>`
         }
     }
     if(unid == "") {
