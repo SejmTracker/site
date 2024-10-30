@@ -19,5 +19,5 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/prints/${id}`)
     document.getElementById("num").textContent = data.number;
     document.getElementById("date").textContent = data.deliveryDate;
     document.getElementById("pdf").src = `https://api.sejm.gov.pl/sejm/term10/prints/${id}/${id}.pdf`;
-    document.title = `Druk nr ${data.number} | SejmTracker`;
+    document.title = `Druk nr ${data.number} "${data.title}" | SejmTracker`;
 })

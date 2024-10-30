@@ -24,7 +24,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/prints`)
     let c1 = document.createElement("td");
     c1.innerHTML = `<p>Druk nr ${data[i].number}<br>${name}</p>`;
     table.addEventListener('click', function() {
-        window.open(`/result/print.html?id=${data[i].number}`);
+        window.location.href = `/result/print.html?id=${data[i].number}`;
     });
     table.className = "single";
     row.appendChild(c1);

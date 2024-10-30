@@ -19,7 +19,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/clubs`)
         c1.innerHTML = `<img src="https://api.sejm.gov.pl/sejm/term10/clubs/${data[i].id}/logo">`
         c2.innerHTML = `<p>${data[i].name}</p>`;
         table.addEventListener('click', function() {
-            window.open(`/result/clubs.html?id=${data[i].id}`);
+            window.location.href = `/result/clubs.html?id=${data[i].id}`;
         });
         table.className = "single";
         row.appendChild(c1);
