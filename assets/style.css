@@ -160,12 +160,12 @@ table{
 }
 
 .mobile-menu a::before {
-    width: 0; /* Keeps the underline hidden */
-    transition: none; /* Removes the animation effect */
+    width: 0;
+    transition: none;
 }
 
 .mobile-menu a:hover::before {
-    width: 0; /* Prevents any change on hover */
+    width: 0;
 }
 
 #announcements{
