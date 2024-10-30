@@ -31,6 +31,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/MP`)
         let br = document.createElement("br");
         divLet.id = alph[y];
         letter.id = alph[y].toLowerCase();
+        letter.style.marginTop = '100px';
         divLet.className = "tab-mp";
         letter.textContent = alph[y];
         letter.appendChild(br)
@@ -54,7 +55,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/MP`)
             c1.innerHTML = `<img src="https://api.sejm.gov.pl/sejm/term10/MP/${i+1}/photo-mini">`;
             c2.innerHTML = `<p>${data[i].lastFirstName}<br>${data[i].club}</p>`;
             table.addEventListener('click', function() {
-                window.open(`/result/mp.html?id=${data[i].id}`);
+                window.location.href = `/result/mp.html?id=${data[i].id}`;
             });
             row.appendChild(c1);
             row.appendChild(c2);

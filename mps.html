@@ -21,6 +21,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/navbar.css">
+    <script src="/scripts/navbar.js"></script>
     <script src="/scripts/main.js"></script>
     <script src="scripts/mp-search.js"></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
@@ -37,7 +39,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7Z2QZKT"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <p><a href="/">< Powrót</a></p>
+    <div id="navbar-container"></div>
     <h1>Posłowie</h1>
     <p>Kliknij w nazwisko posła, aby przejść do szczegółów.</p>
     <p><span style="color: red;">UWAGA!</span> Posłowie zaprzysiężeni po odejściach innych posłów są automatycznie stawiani na końcu listy pod odpowiednią literą.</p>
@@ -49,17 +51,30 @@
     </center>
     <button id="scrollToTopButton" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
     <br>
-    <footer>Wersja <span id="ver">VER</span></footer>
-    <footer>&copy; 2024 <a href="https://im-vi.github.io/" target="_blank">vimedia</a></footer>
-    <footer>Dane &copy; System Informacyjny Sejmu</footer>
-    <footer><a href="/contact.html" target="_blank"><i class="fa-solid fa-phone"></i> Kontakt</a></footer>
-    <footer><a href="/privacy-policy.html">Polityka prywatności</a></footer>
-    <br>
-    <p>
-        <a href="https://instagram.com/sejmtracker" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://github.com/im-vi/SejmTracker" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="https://instagram.com/hi_im_vi_" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-    </p>
-    <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://sejmtracker.github.io/">SejmTracker</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://im-vi.github.io/">vimedia</a> is licensed under <a href="http://creativecommons.org/licenses/by-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-ND 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1"></a></p> 
+    <footer>
+        Wersja v<span id="ver"></span><br>
+        &copy; 2024 SejmTracker. Wszelkie prawa zastrzeżone.<br><br>
+        Dane &copy; <a href="https://sejm.gov.pl/">System Informacyjny Sejmu</a> &bull; <a href="/contact.html" target="_blank">Kontakt</a> &bull; <a href="/privacy-policy.html">Polityka prywatności</a>
+        <br>
+        <p>
+            <a href="https://instagram.com/sejmtracker.pl" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://github.com/im-vi/SejmTracker" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://youtube.com/@sejmtracker" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+        </p> 
+    </footer>
+    <script>
+        updateNavbar();
+
+        fetch(`/assets/data.json`)
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            ver.textContent = data.version;
+        })
+    </script>
 </body>
 </html>

@@ -18,6 +18,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
         return response.json();
 })
 .then(async data => {
+    document.title = `${data.title} | SejmTracker`;
     document.getElementById("back").innerHTML = `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`
     let glos = "?"
     if(data.kind == "ON_LIST") {
@@ -51,6 +52,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
             document.getElementById("tab-vote").appendChild(row);
         }
     } else {
+        document.title = `${data.title} | SejmTracker`;
         document.getElementById("title").textContent = data.title;
         document.getElementById("top").textContent = data.topic;
         document.getElementById("vote").innerHTML = `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b><br>Za: <b>${data.yes}</b>; Przeciw: <b>${data.no}</b>; Wstrzymujących się: <b>${data.abstain}</b>`;

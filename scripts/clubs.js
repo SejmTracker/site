@@ -27,7 +27,6 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/clubs/${id}`)
 
     document.getElementById("photo").src = `https://api.sejm.gov.pl/sejm/term10/clubs/${id}/logo`;
     document.getElementById("name").textContent = data.name;
-    document.getElementById("id").textContent = data.id;
     document.getElementById("membersCount").textContent = data.membersCount;
     document.getElementById("phone").textContent = data.phone;
     document.getElementById("fax").textContent = data.fax;
