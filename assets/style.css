@@ -23,13 +23,13 @@ body{
 #logo-1{color: white;}
 #logo-2{color: red;}
 
-a{
+a {
     color: white;
     text-decoration: none;
     position: relative;
 }
 
-a::before{
+a::before {
     content: '';
     position: absolute;
     width: 0%;
@@ -39,8 +39,13 @@ a::before{
     transition: width 0.3s ease;
 }
 
-a:hover::before{
+a:hover::before {
     width: 100%;
+}
+
+/* Wyjątek dla #btnMP */
+#btnMP::before {
+    content: none;
 }
 
 h1.logo{
@@ -56,21 +61,27 @@ table{
     border: 2px solid white;
 }
 
-#btnMP:link, #btnMP:visited {
-    text-decoration: none;
-    background-color: white;
-    color: black;
-    border: 2px solid red;
-    padding: 10px 20px;
-    text-align: center;
+#btnMP {
+    all: unset; /* Resetuje domyślne style elementu <a> */
     text-decoration: none;
     display: inline-block;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+    backdrop-filter: blur(12px) saturate(180%);
+    background: rgba(240, 240, 240, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease-in-out;
+    margin: 10px;
 }
-  
-#btnMP:hover, #btnMP:active {
-    text-decoration: none;
-    background-color: red;
-    color: white;
+
+#btnMP:hover {
+    background: red;
+    transform: scale(1.1); /* Powiększenie przy najechaniu */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); /* Większy cień */
 }
 
 .absent{
@@ -108,12 +119,19 @@ table{
 }
 
 .single{
-    transition: border-color 0.3s ease;
+    backdrop-filter: blur(12px) saturate(180%);
+    background: rgba(240, 240, 240, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: height 0.3s ease; /* Smooth transition for height */
+    margin: 0 auto; /* Center the navbar within the container */
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-out;
+    border-radius: 10px;
 }
 
 .single:hover{
     border-color: red;
     cursor: pointer;
+    transform: scale(1.05);
 }
 
 #select{
@@ -136,6 +154,7 @@ table{
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     transition: height 0.3s ease;
     margin: 0 auto;
+    z-index: 999;
 }
 
 #tab{
@@ -188,8 +207,23 @@ footer {
     box-sizing: border-box;
 }
 
-#article{
-    width: 90%;
-    margin-left: 5%;
-    text-align: left;
+button {
+    color: #ffffff;
+    background-color: #212121; 
+    font-family: 'Inter';
+    text-decoration: none;
+    font-weight: 600; /* Bold text */
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    display: inline-block;
+    padding: 10px 20px; /* Add padding to buttons */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+button:hover {
+    color: #ffffff; /* Lighten the text on hover */
+    background-color: #353535; 
+    text-decoration: none; /* Removes underline */
+    cursor: pointer;
 }

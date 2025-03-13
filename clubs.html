@@ -23,8 +23,9 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/navbar.css">
     <script src="/scripts/navbar.js"></script>
-    <script src="/scripts/main.js"></script>
     <script src="scripts/club-search.js"></script>
+    <script src="/scripts/main.js"></script>
+    <script src="/scripts/footer.js" defer></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
     <title>Kluby i koła | SejmTracker</title>
     <style>
@@ -48,30 +49,8 @@
     </center>
     <button id="scrollToTopButton" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
     <br>
-    <footer>
-        Wersja v<span id="ver"></span><br>
-        &copy; 2024 SejmTracker. Wszelkie prawa zastrzeżone.<br><br>
-        Dane &copy; <a href="https://sejm.gov.pl/">System Informacyjny Sejmu</a> &bull; <a href="/contact.html" target="_blank">Kontakt</a> &bull; <a href="/privacy-policy.html">Polityka prywatności</a>
-        <br>
-        <p>
-            <a href="https://instagram.com/sejmtracker.pl" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://github.com/im-vi/SejmTracker" target="_blank"><i class="fa-brands fa-github"></i></a>
-            <a href="https://youtube.com/@sejmtracker" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-        </p> 
-    </footer>
     <script>
         updateNavbar();
-
-        fetch(`/assets/data.json`)
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            ver.textContent = data.version;
-        })
     </script>
 </body>
 </html>

@@ -1,7 +1,5 @@
 // © 2024 vimedia
 
-let unid = "";
-
 fetch(`https://api.sejm.gov.pl/sejm/term10/videos/today`)
 .then(response => {
     if (!response.ok) {
@@ -12,14 +10,32 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/videos/today`)
     return response.json();
 })
 .then(data => {
-    for(let i = 0; i < data.length; i++) {
-        if(data[i].type == "posiedzenie") {
-            console.log(data[i])
-            unid = data[i].unid;
-            document.getElementById("live").innerHTML = `<iframe id="videoPlayerFrame" width="912" height="620" src="https://sejm.gov.pl/Sejm10.nsf/VideoFrame.xsp/${unid}" frameborder="0" allowfullscreen></iframe>`
-        }
-    }
-    if(unid == "") {
-        document.getElementById("live").innerHTML = `<p>Dzisiaj nie ma posiedzenia Sejmu.</p>`
-    }
+    data.forEach(element => {
+        let table = document.createElement("table");
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let td2 = document.createElement("td");
+        let td3 = document.createElement("td");
+        let td4 = document.createElement("td");
+        let td5 = document.createElement("td");
+        td1.innerHTML = `<b>${element.title}</b><br><i>${element.description}</i>`;
+        td2.textContent = `${element.startDateTime.split("T")[1]} - ${element.endDateTime.split("T")[1]}`;
+        td3.textContent = element.room;
+        td4.textContent = element.type;
+        td5.innerHTML = `<a href="/result/watch.html?unid=${element.unid}"><button>Oglądaj</button></a>`;
+        td1.width = "20%";
+        td2.width = "20%";
+        td3.width = "20%";
+        td4.width = "20%";
+        td5.width = "20%";
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        tr.appendChild(td5);
+        table.classList.add("glass-navbar");
+        tr.style.width = "100%";
+        table.appendChild(tr);
+        document.getElementById("list-container").appendChild(table);
+    });
 })

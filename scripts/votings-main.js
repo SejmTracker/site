@@ -36,7 +36,7 @@ fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}`)
         let c1 = document.createElement("td");
         c1.innerHTML = `<p>[ Głosowanie nr ${i+1} ]<br>${name}</p>`;
         table.addEventListener('click', function() {
-            window.location.href = `/result/voting.html?sit=${sit}&id=${i+1}`;
+            window.location.href = `/result/vote-club.html?sit=${sit}&id=${i+1}`;
         });
         table.className = "single";
         row.appendChild(c1);

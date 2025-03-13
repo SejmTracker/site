@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="assets/navbar.css">
     <script src="/scripts/navbar.js"></script>
     <script src="/scripts/main.js"></script>
+    <script src="/scripts/footer.js" defer></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
     <title>Kontakt | SejmTracker</title>
 </head>
@@ -34,34 +35,12 @@
     <!-- End Google Tag Manager (noscript) -->
     <div id="navbar-container"></div>
     <h1>Kontakt</h1>
-    <p>Producentem aplikacji SejmTracker jest <a target="_blank" href="https://im-vi.github.io/">vimedia</a></p>
+    <p>Producentem aplikacji jest SejmTracker.</p>
     <p>
         <i class="fa-solid fa-envelope"></i> <a href="mailto:kontakt@sejmtracker.pl">kontakt@sejmtracker.pl</a></p>
     </p>
-    <footer>
-        Wersja v<span id="ver"></span><br>
-        &copy; 2024 SejmTracker. Wszelkie prawa zastrzeżone.<br><br>
-        Dane &copy; <a href="https://sejm.gov.pl/">System Informacyjny Sejmu</a> &bull; <a href="/contact.html" target="_blank">Kontakt</a> &bull; <a href="/privacy-policy.html">Polityka prywatności</a>
-        <br>
-        <p>
-            <a href="https://instagram.com/sejmtracker.pl" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://github.com/im-vi/SejmTracker" target="_blank"><i class="fa-brands fa-github"></i></a>
-            <a href="https://youtube.com/@sejmtracker" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-        </p> 
-    </footer>
     <script>
         updateNavbar();
-
-        fetch(`/assets/data.json`)
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            ver.textContent = data.version;
-        })
     </script>
 </body>
 </html>

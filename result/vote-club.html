@@ -24,10 +24,14 @@
     <link rel="stylesheet" href="/assets/navbar.css">
     <script src="/scripts/navbar.js"></script>
     <script src="/scripts/main.js"></script>
-    <script src="/scripts/ministries.js"></script>
     <script src="/scripts/footer.js" defer></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
-    <title>Ministerstwa | SejmTracker</title>
+    <style>
+        td{
+            padding: 10px;
+        }
+    </style>
+    <title>Głosowanie | SejmTracker</title>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -35,18 +39,23 @@
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="navbar-container"></div>
-    <p><a href="/ministries.html">< Powrót do: Ministerstwa</a></p>
+    <p id="back"></p>
+    <div id="selector"></div>
     <div id="info">
-        <img id="img" height="300px" alt="ministerstwo">
-        <h1 id="name">Ministerstwo</h1>
-        <p>Adres: <span id="address"></span></p>
-        <p>NIP: <span id="nip"></span></p>
-        <p>Regon: <span id="regon"></span></p>
-        <p>Minister: <span id="mp"></span></p>
+        <h1 id="title"></h1>
+        <p id="top"></p>
+        <p id="vote"></p>
+        <p id="votingOpt"></p>
+        <p id="screen"></p>
+        <center>
+            <div id="vote-container"></div>
+        </center>
     </div>
     <button id="scrollToTopButton" onclick="scrollToTop()"><i class="fa-solid fa-arrow-up"></i></button>
-    <script>
-        updateNavbar();
-    </script>
+    
+    <br>
+    <br>
+    <script>updateNavbar();</script>
+    <script src="/scripts/vote-club.js" defer></script>
 </body>
 </html>

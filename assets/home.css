@@ -1,0 +1,91 @@
+body {
+    overflow-x: hidden; /* Zapobiega pojawianiu się poziomego paska przewijania */
+    overflow-y: scroll; /* Ustawia przewijanie w pionie */
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+    background: rgb(65, 65, 65);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative; /* Dodajemy, aby elementy animowane w obrębie kontenera były umieszczone wewnątrz niego */
+}
+
+.reverse {
+    flex-direction: row-reverse;
+}
+
+.image {
+    width: 50%;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+    position: relative; /* Zmieniamy na relative, aby animacja odbywała się wewnątrz kontenera */
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
+
+.text {
+    width: 50%;
+    padding: 20px;
+    position: relative; /* Zmieniamy na relative */
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+.slide-in {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideIn 1s ease-in-out forwards;
+}
+
+.slide-out {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}

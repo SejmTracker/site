@@ -5,6 +5,34 @@ const urlParams = new URLSearchParams(queryString);
 
 const id = urlParams.get('id');
 
+function checkImageExistence(url) {
+  const img = new Image();
+  let result = false;
+
+  img.onload = function() {
+    if (img.complete && img.naturalWidth > 0) {
+      result = true;  // Image exists
+    }
+  };
+
+  img.onerror = function() {
+    result = false; // Image doesn't exist
+  };
+
+  img.src = url;
+
+  // Return false immediately (because the image is loading asynchronously)
+  return result;
+}
+
+function getImg(url) {
+  if(checkImageExistence(url)) {
+    return url;
+  } else {
+    return "/assets/BrakIkony.png";
+  }
+}
+
 let email;
 let txt = "";
 let multipleEmails = false;
