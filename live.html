@@ -27,6 +27,10 @@
     <script src="/scripts/live.js"></script>
     <script src="/scripts/footer.js" defer></script>
     <script src="https://kit.fontawesome.com/1074444b18.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/SEJMTRACKER-NOWE.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Transmisja | SejmTracker</title>
 </head>
 <body>
@@ -35,6 +39,12 @@
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="navbar-container"></div>
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container" id="loaderContainer">
+            <div class="loader"></div>
+            <p id="loadingText">Wczytuję dane...</p>
+        </div>
+    </div>
     <h1>Dzisiejsze transmisje</h1>
     <div id="list-container"></div>
     <br>
