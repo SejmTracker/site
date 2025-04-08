@@ -5,42 +5,49 @@ const urlParams = new URLSearchParams(queryString);
 
 const sit = urlParams.get('sit');
 
-fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}`)
-.then(response => {
-    if (!response.ok) {
-        document.getElementById("info").innerHTML = `<center><p style="background-color: red; width: 300px; height: auto; border-radius: 20px;"><br><i class="fa-solid fa-triangle-exclamation"></i><br>BŁĄD<br>Nie można odnaleźć głosowań.<br><br></p></center>`
-        document.title = "Wystąpił błąd | SejmTracker";
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-})
-.then(data => {
-    // for(let i = 0; i < data.length; i++) {
-    //     let div = document.getElementById("tab");
-    //     let link = document.createElement("div");
-    //     link.innerHTML = `<a href="/result/voting.html?sit=${sit}&id=${i+1}">${i+1}. ${data[i].title}</a><br><br>`;
-    //     div.appendChild(link);
-    // }
+let attempt = 0;
+function fetchData() {
+    attempt++;
+    fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}`)
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.loader-overlay').style.display = 'none';
+            
+            let name;
 
-    let name;
+            for(let i = 0; i < data.length; i++) {
+                name = data[i].title
+                if(name.length > 100) {
+                name = name.slice(0, 100) + "...";
+                }
 
-    for(let i = 0; i < data.length; i++) {
-        name = data[i].title
-        if(name.length > 100) {
-        name = name.slice(0, 100) + "...";
-        }
-
-        let div = document.getElementById("tab");
-        let table = document.createElement("table");
-        let row = document.createElement("tr");
-        let c1 = document.createElement("td");
-        c1.innerHTML = `<p>[ Głosowanie nr ${i+1} ]<br>${name}</p>`;
-        table.addEventListener('click', function() {
-            window.location.href = `/result/vote-club.html?sit=${sit}&id=${i+1}`;
+                let div = document.getElementById("tab");
+                let table = document.createElement("table");
+                let row = document.createElement("tr");
+                let c1 = document.createElement("td");
+                c1.innerHTML = `<p>[ Głosowanie nr ${i+1} ]<br>${name}</p>`;
+                table.addEventListener('click', function() {
+                    window.location.href = `/result/vote-club.html?sit=${sit}&id=${i+1}`;
+                });
+                table.className = "single";
+                row.appendChild(c1);
+                table.appendChild(row);
+                div.appendChild(table);
+            }
+        })
+        .catch(() => {
+            if (attempt >= 7) {
+                document.getElementById('loaderContainer').innerHTML = `
+                    <p>Nie udało się załadować zawartości. Odśwież stronę i spróbuj ponownie.</p>
+                    <button onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Odśwież</button>
+                `;
+                return;
+            }
+            let text = "Ponawiam próbę";
+            if (attempt === 2) text = "Trwa to dłużej niż powinno...";
+            if (attempt > 2) text = `Ponawiam próbę (${attempt - 2})...`;
+            document.getElementById('loadingText').innerText = text;
+            setTimeout(fetchData, 2000);
         });
-        table.className = "single";
-        row.appendChild(c1);
-        table.appendChild(row);
-        div.appendChild(table);
-      }
-})
+}
+fetchData();

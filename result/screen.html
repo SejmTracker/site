@@ -22,6 +22,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/screen.css">
     <script src="/scripts/screen.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/SEJMTRACKER-NOWE.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Ekran | SejmTracker</title>
 </head>
 <body>
@@ -29,6 +33,12 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7Z2QZKT"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container" id="loaderContainer">
+            <div class="loader"></div>
+            <p id="loadingText">Wczytuję dane...</p>
+        </div>
+    </div>
     <p>GŁOSOWANIE NR <span id="voteNum">X</span></p>
     <div>
         <p>

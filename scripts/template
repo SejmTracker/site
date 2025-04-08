@@ -1,0 +1,25 @@
+let attempt = 0;
+function fetchData() {
+    attempt++;
+    fetch(``)
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.loader-overlay').style.display = 'none';
+            
+        })
+        .catch(() => {
+            if (attempt >= 7) {
+                document.getElementById('loaderContainer').innerHTML = `
+                    <p>Nie udało się załadować zawartości. Odśwież stronę i spróbuj ponownie.</p>
+                    <button onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Odśwież</button>
+                `;
+                return;
+            }
+            let text = "Ponawiam próbę";
+            if (attempt === 2) text = "Trwa to dłużej niż powinno...";
+            if (attempt > 2) text = `Ponawiam próbę (${attempt - 2})...`;
+            document.getElementById('loadingText').innerText = text;
+            setTimeout(fetchData, 2000);
+        });
+}
+fetchData();
