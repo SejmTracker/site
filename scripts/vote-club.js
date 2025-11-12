@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("back").innerHTML = `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`
                 if(data.kind != "ELECTRONIC") {
                     alert("W tym momencie nie jest możliwe sprawdzenie wyników głosowania wg klubów dla typów innych niż głosowanie elektroniczne");
+                    window.location.href = `/result/voting.html?sit=${sit}&id=${id}`
                 } else {
                     document.title = `${data.title} | SejmTracker`;
                     title.textContent = data.title;

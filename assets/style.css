@@ -15,7 +15,7 @@ html{
 body{
    font-family: 'Inter', sans-serif;
    text-align: center;
-   background-color: dimgray;
+   background-color: #2f2f2f;
    background-image: linear-gradient(to top right, #2f2f2f, #272727);
    color: white;
 }
@@ -275,4 +275,28 @@ button:hover {
     width: 100%;
     background: linear-gradient(90deg, white 30%, red 70%);
     animation: loadingBar 2s infinite ease-in-out;
+}
+
+.mvote-yes{
+    color: green;
+}
+
+.mvote-no{
+    color: red;
+}
+
+.mvote-abstain{
+    color: yellow;
+}
+
+.streamContainer{
+    border: 2px solid white;
+}
+
+.streamInfoContainer{
+    width: 20vw;
+}
+
+.stream-container video{
+    width: 90vw;
 }

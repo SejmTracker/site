@@ -22,7 +22,7 @@ fetch(`/assets/data.json`)
 .then(data => {
     let foot = document.createElement("footer");
     foot.innerHTML = `Wersja v${data.version}<br>
-    &copy; 2025 SejmTracker. Wszelkie prawa zastrzeżone.<br><br>
+    ${data.copyright}. Wszelkie prawa zastrzeżone.<br><br>
     Dane &copy; <a href="https://sejm.gov.pl/">System Informacyjny Sejmu</a> &bull; <a href="/contact.html" target="_blank">Kontakt</a> &bull; <a href="/privacy-policy.html">Polityka prywatności</a>
     <br>
     <p>

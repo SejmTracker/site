@@ -1,61 +1,102 @@
-// © 2024 vimedia
+// © 2025 AV/PA Studios
 
-let desc;
-let attempt = 0;
-function fetchData() {
-    attempt++;
-    fetch(`https://api.sejm.gov.pl/sejm/term10/videos/today`)
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector('.loader-overlay').style.display = 'none';
-            
-            data.forEach(element => {
-                desc = element.description;
-                if(desc.length > 100) {
-                    desc = desc.slice(0, 100) + "...";
+async function displayStreams() {
+    const data = await getData("https://api.sejm.gov.pl/sejm/term10/videos/today");
+    hideLoadingOverlay();
+
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+    if(!data.length) {
+        let info = create("p", "Dzisiaj nie ma żadnych transmisji.", "info");
+        info.style.paddingBottom = "48vh";
+        container.appendChild(info);
+    } else {
+        let streamContainer = create("div", "", "", "glass-navbar streamContainer");
+        streamContainer.style.display = "flex";
+        streamContainer.style.flexDirection = "row";
+        streamContainer.style.width = "90%";
+        streamContainer.style.border = "none"; 
+        let titleContainer = create("div", "", "", "streamInfoContainer");
+        let title = create("h3", "Tytuł");
+        let desc = create("p", "Opis");
+        titleContainer.append(title, desc);
+        let time = create("p", `Czas`, "", "streamInfoContainer");
+        let room = create("p", "Miejsce", "", "streamInfoContainer");
+        let type = create("p", "Typ", "", "streamInfoContainer");
+        let btn = create("div", ``, "", "streamInfoContainer");
+        streamContainer.append(titleContainer, time, room, type, btn);
+        container.append(streamContainer, create("br", ""));
+
+        for(let i = 0; i < data.length; i++) {
+            let streamContainer = create("div", "", "", "glass-navbar streamContainer");
+            streamContainer.style.display = "flex";
+            streamContainer.style.flexDirection = "row";
+            let titleContainer = create("div", "", "", "streamInfoContainer");
+            let title = create("h3", data[i].title);
+            let desc;
+            if(data[i].description) {
+                if(data[i].description.length > 100) {
+                    desc = create("p", data[i].description.slice(0, 100) + "...");
+                } else {
+                    desc = create("p", data[i].description);
                 }
-
-                let table = document.createElement("table");
-                let tr = document.createElement("tr");
-                let td1 = document.createElement("td");
-                let td2 = document.createElement("td");
-                let td3 = document.createElement("td");
-                let td4 = document.createElement("td");
-                let td5 = document.createElement("td");
-                td1.innerHTML = `<b>${element.title}</b><br><i>${desc}</i>`;
-                td2.textContent = `${element.startDateTime.split("T")[1]} - ${element.endDateTime.split("T")[1]}`;
-                td3.textContent = element.room;
-                td4.textContent = element.type;
-                td5.innerHTML = `<a href="/result/watch.html?unid=${element.unid}"><button>Oglądaj</button></a>`;
-                td1.width = "20%";
-                td2.width = "20%";
-                td3.width = "20%";
-                td4.width = "20%";
-                td5.width = "20%";
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                tr.appendChild(td4);
-                tr.appendChild(td5);
-                table.classList.add("glass-navbar");
-                tr.style.width = "100%";
-                table.appendChild(tr);
-                document.getElementById("list-container").appendChild(table);
-            });
-        })
-        .catch(() => {
-            if (attempt >= 7) {
-                document.getElementById('loaderContainer').innerHTML = `
-                    <p>Nie udało się załadować zawartości. Odśwież stronę i spróbuj ponownie.</p>
-                    <button onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Odśwież</button>
-                `;
-                return;
+            } else {
+                desc = create("p", "<i>Brak opisu.</i>");
             }
-            let text = "Ponawiam próbę";
-            if (attempt === 2) text = "Trwa to dłużej niż powinno...";
-            if (attempt > 2) text = `Ponawiam próbę (${attempt - 2})...`;
-            document.getElementById('loadingText').innerText = text;
-            setTimeout(fetchData, 2000);
-        });
+            titleContainer.append(title, desc);
+            let time = create("p", `${data[i].startDateTime.split("T")[1]} - ${data[i].endDateTime.split("T")[1]}`, "", "streamInfoContainer");
+            let room = create("p", data[i].room, "", "streamInfoContainer");
+            let type = create("p", data[i].type, "", "streamInfoContainer");
+            let btn = create("a", `<button>Oglądaj</button>`, "", "streamInfoContainer");
+            btn.href = `/result/watch.html?unid=${data[i].unid}`;
+            streamContainer.append(titleContainer, time, room, type, btn);
+            container.append(streamContainer, create("br", ""));
+        }
+    }
 }
-fetchData();
+
+async function displayStreamsMobile() {
+    const data = await getData("https://api.sejm.gov.pl/sejm/term10/videos/today");
+    hideLoadingOverlay();
+
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+    if(!data.length) {
+        let info = create("p", "Dzisiaj nie ma żadnych transmisji.", "info");
+        info.style.paddingBottom = "48vh";
+        container.appendChild(info);
+    } else {
+        for(let i = 0; i < data.length; i++) {
+            let streamContainer = create("div", "", "", "glass-navbar streamContainer");
+            streamContainer.style.display = "flex";
+            streamContainer.style.flexDirection = "column";
+            let titleContainer = create("div", "", "", "mstreamInfoContainer");
+            let title = create("h3", data[i].title);
+            let desc;
+            if(data[i].description) {
+                desc = create("p", data[i].description);
+            } else {
+                desc = create("p", "<i>Brak opisu.</i>");
+            }
+            titleContainer.append(title, desc);
+            let time = create("p", `${data[i].startDateTime.split("T")[1]} - ${data[i].endDateTime.split("T")[1]}`, "", "mstreamInfoContainer");
+            let type = create("p", data[i].type, "", "mstreamInfoContainer");
+            let btn = create("a", `<button>Oglądaj</button>`, "", "mstreamInfoContainer");
+            btn.href = `/result/watch.html?unid=${data[i].unid}`;
+            streamContainer.append(titleContainer, time, type, create("br", ""), btn);
+            container.append(streamContainer, create("br", ""));
+        }
+    }
+}
+
+function handleDeviceWidth() {
+    if (window.innerWidth <= 1120) {
+        displayStreamsMobile();
+    } else {
+        displayStreams();
+    }
+}
+
+handleDeviceWidth();
+
+window.addEventListener('resize', handleDeviceWidth);
