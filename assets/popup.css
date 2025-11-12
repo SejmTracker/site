@@ -1,0 +1,184 @@
+/* Kontener - wypełnia cały ekran */
+#popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Przyciemnienie tła */
+    display: none; /* Ukryte na początku */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Okienko modalne */
+.popup {
+    position: relative;
+    background: linear-gradient(to top right, #2f2f2f, #272727);
+    width: 400px;
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Przycisk zawsze na dole */
+    transform: scale(0.8); /* Początkowy stan animacji */
+    opacity: 0; /* Niewidoczne na początku */
+    animation: fadeIn 0.3s forwards;
+    text-align: left;
+}
+
+/* Animacja pojawienia się */
+@keyframes fadeIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animacja znikania */
+@keyframes fadeOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Zawartość okna */
+.popup-content {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+/* Przycisk zamykania */
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Przycisk akcji */
+.popup-button {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.popup-button:hover {
+    background: #45a049;
+}
+
+/* Symbol okna */
+.popup-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+/* Typy okien */
+.popup.info {
+    border-left: 5px solid #2196F3; /* Niebieski dla info */
+}
+
+.popup.warning {
+    border-left: 5px solid #FF9800; /* Pomarańczowy dla warning */
+}
+
+.popup.success {
+    border-left: 5px solid #4CAF50; /* Zielony dla success */
+}
+
+.popup.error {
+    border-left: 5px solid #DC3545; /* Zielony dla success */
+}
+
+.popup.ask {
+    border-left: 5px solid #2196F3; /* Zielony dla success */
+}
+
+/* Kolory przyciskow */
+.popup-button.info {
+    background-color: #2196F3; /* Niebieski dla info */
+}
+
+.popup-button.warning {
+    background-color: #FF9800; /* Pomarańczowy dla warning */
+}
+
+.popup-button.success {
+    background-color: #4CAF50; /* Zielony dla success */
+}
+
+.popup-button.error {
+    background-color: #DC3545; /* Zielony dla success */
+}
+
+.popup-button.ask {
+    background-color: #2196F3; /* Niebieski dla info */
+}
+
+.popup-buttons-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.popup-buttons-container .popup-button {
+    flex: 1;
+    margin: 0 5px;
+}
+
+/* Większy rozmiar dla modal */
+.popup.modal {
+    width: 900px;
+    min-height: 500px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Przyciski wyrównane w prawym dolnym rogu dla modal */
+.popup.modal .popup-buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: auto;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Styl przycisków */
+.popup.modal .popup-buttons-container .popup-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.popup.modal .popup-buttons-container .popup-button:hover {
+    background-color: #0056b3;
+}

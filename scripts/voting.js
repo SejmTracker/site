@@ -1,129 +1,311 @@
-// © 2024 vimedia
-document.addEventListener("DOMContentLoaded", function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+// (C) 2025 AV/PA Studios
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
-    const sit = urlParams.get('sit');
-    const id = urlParams.get('id');
+const sit = urlParams.get('sit');
+const id = urlParams.get('id');
 
-    let table = document.getElementById("tab-vote");
-    let votingOption = document.getElementById("votingOpt");
-    let title = document.getElementById("title");
-    let top = document.getElementById("top");
-    let info = document.getElementById("info");
-    let vote = document.getElementById("vote");
-    let screen = document.getElementById("screen");
+async function votingRegular() {
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
 
-    document.getElementById("selector").innerHTML = `<a id="btnMP" href="/result/vote-club.html?sit=${sit}&id=${id}">Głosowanie klubowe</a>&nbsp;<a id="btnMP" href="/result/voting.html?sit=${sit}&id=${id}">Głosowanie indywidualne</a>`;
+    document.title = data.title + " | SejmTracker";
+    
+    hideLoadingOverlay();
+    const container = document.getElementById("votingTableContainer");
+    container.innerHTML = "";
 
-    let attempt = 0;
-    function fetchData() {
-        attempt++;
-        fetch(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`)
-            .then(response => response.json())
-            .then(async data => {
-                document.querySelector('.loader-overlay').style.display = 'none';
-                
-                document.title = `${data.title} | SejmTracker`;
-                document.getElementById("back").innerHTML = `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`
-                let glos = "?"
-                if(data.kind == "ON_LIST") {
-                    let votingOptions = "";
-                    for(let i = 0; i < data.votingOptions.length; i++) {
-                        votingOptions = votingOptions + `${data.votingOptions[i].optionIndex}. ${data.votingOptions[i].option}: ${data.votingOptions[i].votes}<br>`
-                    }
-                    votingOption.innerHTML = `Opcje głosowania:<br>${votingOptions}`;
-                    title.textContent = data.title;
-                    top.textContent = data.topic;
-                    info.innerHTML = `Głosowało: ${data.totalVoted}; Niebiorących udziału: ${data.notParticipating}`;
-                    for(let j = 0; j < data.votes.length; j++) {
-                        for(let k = 1; k <= data.votingOptions.length; k++) {
-                            if(data.votes[j].listVotes[k] == "YES") {
-                                glos = k;
-                            }
-                        }
-                        let row = document.createElement("tr");
-                        let num = document.createElement("td");
-                        let nam = document.createElement("td");
-                        let clu = document.createElement("td");
-                        let vot = document.createElement("td");
-                        num.textContent = data.votes[j].MP
-                        nam.innerHTML = `<a target="_blank" href="/result/mp.html?id=${data.votes[j].MP}">${data.votes[j].lastName.toUpperCase()} ${data.votes[j].firstName}</a>`
-                        clu.innerHTML = `<a target="_blank" href="/result/clubs.html?id=${data.votes[j].club}">${data.votes[j].club}</a>`
-                        vot.textContent = data.votingOptions[glos - 1].option;
-                        row.appendChild(num);
-                        row.appendChild(nam);
-                        row.appendChild(clu);
-                        row.appendChild(vot);
-                        table.appendChild(row);
-                    }
-                } else {
-                    document.title = `${data.title} | SejmTracker`;
-                    title.textContent = data.title;
-                    top.textContent = data.topic;
-                    vote.innerHTML = `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b><br>Za: <b>${data.yes}</b>; Przeciw: <b>${data.no}</b>; Wstrzymujących się: <b>${data.abstain}</b>`;
-                    screen.innerHTML = `<a target="_blank" href="/result/screen.html?sit=${sit}&id=${id}">[ Wyświetl jako ekran ]</a>`;
-                    for(let i = 0; i <= data.votes.length; i++) {
-                        if(data.votes[i].vote === "NO") {
-                            glos = "PRZECIW"
-                        } else if(data.votes[i].vote === "YES") {
-                            glos = "ZA"
-                        } else if(data.votes[i].vote === "ABSTAIN") {
-                            glos = "WSTRZYMAŁ/A SIĘ"
-                        } else if(data.votes[i].vote == "ABSENT") {
-                            glos = "NIEOBECNY"
-                        }
-
-                        if(data.votes[i].vote == "ABSENT") {
-                            let row = document.createElement("tr");
-                            let num = document.createElement("td");
-                            let nam = document.createElement("td");
-                            let clu = document.createElement("td");
-                            let vot = document.createElement("td");
-                            num.innerHTML = data.votes[i].MP;
-                            nam.innerHTML = `<a class="absent" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`;
-                            clu.innerHTML = `<a class="absent" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`;
-                            vot.textContent = glos;
-                            num.className = "absent";
-                            vot.className = "absent";
-                            row.appendChild(num);
-                            row.appendChild(nam);
-                            row.appendChild(clu);
-                            row.appendChild(vot);
-                            document.getElementById("tab-vote").appendChild(row);
-                        } else {
-                            let row = document.createElement("tr");
-                            let num = document.createElement("td");
-                            let nam = document.createElement("td");
-                            let clu = document.createElement("td");
-                            let vot = document.createElement("td");
-                            num.textContent = data.votes[i].MP
-                            nam.innerHTML = `<a target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
-                            clu.innerHTML = `<a target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
-                            vot.textContent = glos
-                            row.appendChild(num);
-                            row.appendChild(nam);
-                            row.appendChild(clu);
-                            row.appendChild(vot);
-                            table.appendChild(row);
-                        }
-                    }
-                }
-            })
-            .catch(() => {
-                if (attempt >= 7) {
-                    document.getElementById('loaderContainer').innerHTML = `
-                        <p>Nie udało się załadować zawartości. Odśwież stronę i spróbuj ponownie.</p>
-                        <button onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> Odśwież</button>
-                    `;
-                    return;
-                }
-                let text = "Ponawiam próbę";
-                if (attempt === 2) text = "Trwa to dłużej niż powinno...";
-                if (attempt > 2) text = `Ponawiam próbę (${attempt - 2})...`;
-                document.getElementById('loadingText').innerText = text;
-                setTimeout(fetchData, 2000);
-            });
+    let backLink = create("p", `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`, "back");
+    let selector = create("div", `<a id="btnMP" href="/result/vote-club.html?sit=${sit}&id=${id}">Głosowanie klubowe</a>&nbsp;<a id="btnMP" href="/result/voting.html?sit=${sit}&id=${id}">Głosowanie indywidualne</a>`, "selector");
+    let infoSection = create("div", "", "info");
+    let title = create("h1", data.title, "title");
+    let top = create("p", data.topic, "top");
+    let vote = create("p", `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b><br>Za: <b>${data.yes}</b>; Przeciw: <b>${data.no}</b>; Wstrzymało się: <b>${data.abstain}</b>`);
+    
+    let tableContainer = create("div", "", "tableContainer");
+    tableContainer.style.display = "flex";
+    tableContainer.style.justifyContent = "center";
+    let table = create("table", "", "votingTable");
+    let tr = create("tr", "");
+    let thNum = create("th", "Numer legitymacji");
+    let thName = create("th", "Nazwisko i imię");
+    let thClub = create("th", "Klub");
+    let thVote = create("th", "Głos");
+    tr.append(thNum, thName, thClub, thVote);
+    table.appendChild(tr);
+    for(let i = 0; i < data.votes.length; i++) {
+        let tr = create("tr", "");
+        let tdNum = create("td", data.votes[i].MP);
+        let tdName = create("td", `<a target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`);
+        let tdClub = create("td", `<a target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`);
+        let voteText;
+        switch (data.votes[i].vote) {
+            case "YES": voteText = "ZA"; break;
+            case "NO": voteText = "PRZECIW"; break;
+            case "ABSENT": voteText = "NIEOBECNY"; break;
+            case "ABSTAIN": voteText = "WSTRZYMAŁ/A SIĘ"; break;
+        }
+        let tdVote = create("td", voteText);
+        if(voteText == "NIEOBECNY") {
+            tdNum.className = "absent";
+            tdName.innerHTML = `<a class="absent" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="absent" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+            tdVote.className = "absent";
+        }
+        tr.append(tdNum, tdName, tdClub, tdVote);
+        table.appendChild(tr);
     }
-    fetchData();
-})
+    tableContainer.appendChild(table);
+
+    infoSection.append(title, top, vote);
+    container.append(backLink, selector, infoSection, tableContainer);
+}
+
+async function votingMobile() {
+    console.log("mobile");
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
+    
+    hideLoadingOverlay();
+    const container = document.getElementById("votingTableContainer");
+    container.innerHTML = "";
+
+    let backLink = create("p", `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`, "back");
+    let selector = create("div", `<a id="btnMP" href="/result/vote-club.html?sit=${sit}&id=${id}">Głosowanie klubowe</a>&nbsp;<a id="btnMP" href="/result/voting.html?sit=${sit}&id=${id}">Głosowanie indywidualne</a>`, "selector");
+    let infoSection = create("div", "", "info");
+    let title = create("h1", data.title, "title");
+    let top = create("p", data.topic, "top");
+    let vote = create("p", `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b><br>Za: <b>${data.yes}</b>; Przeciw: <b>${data.no}</b>; Wstrzymało się: <b>${data.abstain}</b>`);
+    let colorExplanation = create("p", `<span class="mvote-yes">ZA</span> | <span class="mvote-no">PRZECIW</span> | <span class="mvote-abstain">WSTRZYMAŁ/A SIĘ</span> | <span class="absent">NIEOBECNY</span>`)
+
+    let tableContainer = create("div", "", "tableContainer");
+    tableContainer.style.display = "flex";
+    tableContainer.style.justifyContent = "center";
+    let table = create("table", "", "votingTable");
+    let tr = create("tr", "");
+    let thName = create("th", "Nazwisko i imię");
+    let thClub = create("th", "Klub");
+    tr.append(thName, thClub);
+    table.appendChild(tr);
+    for(let i = 0; i < data.votes.length; i++) {
+        let tr = create("tr", "");
+        let tdName = create("td", `<a target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`);
+        let tdClub = create("td", `<a target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`);
+        if(data.votes[i].vote == "ABSENT") {
+            tdName.innerHTML = `<a class="absent" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="absent" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+        } else if(data.votes[i].vote == "YES") {
+            tdName.innerHTML = `<a class="mvote-yes" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="mvote-yes" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+        } else if(data.votes[i].vote == "NO") {
+            tdName.innerHTML = `<a class="mvote-no" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="mvote-no" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+        } else if(data.votes[i].vote == "ABSTAIN") {
+            tdName.innerHTML = `<a class="mvote-abstain" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="mvote-abstain" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+        }
+        tr.append(tdName, tdClub);
+        table.appendChild(tr);
+    }
+    tableContainer.appendChild(table);
+
+    infoSection.append(title, top, vote, colorExplanation);
+    container.append(backLink, selector, infoSection, tableContainer);
+}
+
+async function votingRegularList() {
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
+    
+    hideLoadingOverlay();
+    const container = document.getElementById("votingTableContainer");
+    container.innerHTML = "";
+
+    let backLink = create("p", `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`, "back");
+    let selector = create("div", `<a id="btnMP" href="/result/vote-club.html?sit=${sit}&id=${id}">Głosowanie klubowe</a>&nbsp;<a id="btnMP" href="/result/voting.html?sit=${sit}&id=${id}">Głosowanie indywidualne</a>`, "selector");
+    let infoSection = create("div", "", "info");
+    let title = create("h1", data.title, "title");
+    let top = create("p", data.topic, "top");
+    let vote = create("p", `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b>`);
+    
+    let optionsListContainer = create("div", "", "optionsListContainer");
+    optionsListContainer.style.display = "flex";
+    optionsListContainer.style.justifyContent = "center";
+
+    let optionsList = create("table", "", "optionsList");
+    let trOpt = create("tr", "");
+    let thIndex = create("th", "Numer");
+    let thOption = create("th", "Opcja");
+    let thVotes = create("th", "Ilość głosów");
+    trOpt.append(thIndex, thOption, thVotes);
+    optionsList.appendChild(trOpt);
+
+    for(let i = 0; i < data.votingOptions.length; i++) {
+        let tr = create("tr", "");
+        let tdIndex = create("td", data.votingOptions[i].optionIndex);
+        let tdOption = create("td", data.votingOptions[i].option);
+        let tdVotes = create("td", data.votingOptions[i].votes);
+        tr.append(tdIndex, tdOption, tdVotes);
+        optionsList.appendChild(tr);
+    }
+    optionsListContainer.appendChild(optionsList);
+
+    let validVotes = 0;
+    let abstain = 0;
+
+    for(let i = 0; i < data.votes.length; i++) {
+        if(data.votes[i].vote == "VOTE_VALID") validVotes++;
+        else abstain++;
+    }
+
+    let validityStats = create("p", `Głosów ważnych: <b>${validVotes}</b>; Nie oddano głosu / Nieobecny: <b>${abstain}</b>`);
+
+    let tableContainer = create("div", "", "tableContainer");
+    tableContainer.style.display = "flex";
+    tableContainer.style.justifyContent = "center";
+    let table = create("table", "", "votingTable");
+    let tr = create("tr", "");
+    let thNum = create("th", "Numer legitymacji");
+    let thName = create("th", "Nazwisko i imię");
+    let thClub = create("th", "Klub");
+    let thVote = create("th", "Głos");
+    tr.append(thNum, thName, thClub, thVote);
+    table.appendChild(tr);
+    for(let i = 0; i < data.votes.length; i++) {
+        let tr = create("tr", "");
+        let tdNum = create("td", data.votes[i].MP);
+        let tdName = create("td", `<a target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`);
+        let tdClub = create("td", `<a target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`);
+        let voteText;
+        for(let j = 1; j <= data.votingOptions.length; j++) {
+            if(data.votes[i].listVotes[j] == "YES") {
+                voteText = data.votingOptions[j-1].option;
+            }
+        }
+        if(!voteText) voteText = "BRAK";
+        let tdVote = create("td", voteText);
+        if(data.votes[i].vote == "ABSENT") {
+            tdNum.className = "absent";
+            tdName.innerHTML = `<a class="absent" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="absent" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+            tdVote.className = "absent";
+            tdVote.innerHTML = "NIEOBECNY";
+        }
+        tr.append(tdNum, tdName, tdClub, tdVote);
+        table.appendChild(tr);
+    }
+    tableContainer.appendChild(table);
+
+    infoSection.append(title, top, vote, optionsListContainer, validityStats);
+    if(data.againstAll) {
+        let againstAllInfo = create("p", `Posłowie będący przeciwko wszystkim opcjom: <b>${data.againstAll}</b>`);
+        infoSection.appendChild(againstAllInfo);
+    }
+    container.append(backLink, selector, infoSection, tableContainer);
+}
+
+async function votingMobileList() {
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
+    
+    hideLoadingOverlay();
+    const container = document.getElementById("votingTableContainer");
+    container.innerHTML = "";
+
+    let backLink = create("p", `<a href="/result/votingSelect.html?sit=${sit}">< Powrót do: Wybór głosowania</a>`, "back");
+    let selector = create("div", `<a id="btnMP" href="/result/vote-club.html?sit=${sit}&id=${id}">Głosowanie klubowe</a>&nbsp;<a id="btnMP" href="/result/voting.html?sit=${sit}&id=${id}">Głosowanie indywidualne</a>`, "selector");
+    let infoSection = create("div", "", "info");
+    let title = create("h1", data.title, "title");
+    let top = create("p", data.topic, "top");
+    let vote = create("p", `Głosowało: <b>${data.totalVoted}</b>; Nieobecnych: <b>${data.notParticipating}</b>`);
+    
+    let optionsListContainer = create("div", "", "mOptionsListContainer");
+    optionsListContainer.style.display = "flex";
+    optionsListContainer.style.justifyContent = "center";
+
+    let optionsList = create("table", "", "mOptionsList");
+    let trOpt = create("tr", "");
+    let thIndex = create("th", "Numer");
+    let thOption = create("th", "Opcja");
+    let thVotes = create("th", "Ilość głosów");
+    trOpt.append(thIndex, thOption, thVotes);
+    optionsList.appendChild(trOpt);
+
+    for(let i = 0; i < data.votingOptions.length; i++) {
+        let tr = create("tr", "");
+        let tdIndex = create("td", data.votingOptions[i].optionIndex);
+        let tdOption = create("td", data.votingOptions[i].option);
+        let tdVotes = create("td", data.votingOptions[i].votes);
+        tr.append(tdIndex, tdOption, tdVotes);
+        optionsList.appendChild(tr);
+    }
+    optionsListContainer.appendChild(optionsList);
+
+    let validVotes = 0;
+    let abstain = 0;
+
+    for(let i = 0; i < data.votes.length; i++) {
+        if(data.votes[i].vote == "VOTE_VALID") validVotes++;
+        else abstain++;
+    }
+
+    let validityStats = create("p", `Głosów ważnych: <b>${validVotes}</b>; Nie oddano głosu / Nieobecny: <b>${abstain}</b>`);
+
+    let tableContainer = create("div", "", "tableContainer");
+    tableContainer.style.display = "flex";
+    tableContainer.style.justifyContent = "center";
+    let table = create("table", "", "votingTable");
+    let tr = create("tr", "");
+    let thName = create("th", "Nazwisko i imię");
+    let thClub = create("th", "Klub");
+    let thVote = create("th", "Głos");
+    tr.append(thName, thClub, thVote);
+    table.appendChild(tr);
+    for(let i = 0; i < data.votes.length; i++) {
+        let tr = create("tr", "");
+        let tdName = create("td", `<a target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].MP}. ${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`);
+        let tdClub = create("td", `<a target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`);
+        let voteText;
+        for(let j = 1; j <= data.votingOptions.length; j++) {
+            if(data.votes[i].listVotes[j] == "YES") {
+                voteText = data.votingOptions[j-1].option;
+            }
+        }
+        if(!voteText) voteText = "BRAK";
+        let tdVote = create("td", voteText);
+        if(data.votes[i].vote == "ABSENT") {
+            tdName.innerHTML = `<a class="absent" target="_blank" href="/result/mp.html?id=${data.votes[i].MP}">${data.votes[i].lastName.toUpperCase()} ${data.votes[i].firstName}</a>`
+            tdClub.innerHTML = `<a class="absent" target="_blank" href="/result/clubs.html?id=${data.votes[i].club}">${data.votes[i].club}</a>`
+            tdVote.className = "absent";
+            tdVote.innerHTML = "NIEOBECNY";
+        }
+        tr.append(tdName, tdClub, tdVote);
+        table.appendChild(tr);
+    }
+    tableContainer.appendChild(table);
+
+    infoSection.append(title, top, vote, optionsListContainer, validityStats);
+    if(data.againstAll) {
+        let againstAllInfo = create("p", `Posłowie będący przeciwko wszystkim opcjom: <b>${data.againstAll}</b>`);
+        infoSection.appendChild(againstAllInfo);
+    }
+    container.append(backLink, selector, infoSection, tableContainer);
+}
+
+async function votingKindRegular() {
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
+    (data.kind == "ON_LIST") ? votingRegularList() : votingRegular();
+}
+
+async function votingKindMobile() {
+    const data = await getData(`https://api.sejm.gov.pl/sejm/term10/votings/${sit}/${id}`);
+    (data.kind == "ON_LIST") ? votingMobileList() : votingMobile();
+}
+
+function handleDeviceWidth() {
+    if (window.innerWidth <= 1120) {
+        votingKindMobile();
+    } else {
+        votingKindRegular();
+    }
+}
+
+handleDeviceWidth();
+
+window.addEventListener('resize', handleDeviceWidth);

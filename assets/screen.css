@@ -6,6 +6,7 @@ body{
     margin-left: 20px;
     margin-right: 20px;
     font-weight: bold;
+    user-select: none;
 }
 p{
     font-size: 50pt;
